@@ -1,0 +1,10 @@
+{
+  "backlogTitle": "{project}'s backlog",
+  "chatTitle": "{project}'s chat room",
+  "chatsTitle": "{groups}'s chats",
+  "filesTitle": "{project}'s files",
+  "stakeholdersTitle": "{project}'s stakeholders",
+  "welcome": "Hi! ",
+  "pendingProjects": "You have no pending projects | You have one pending project | You have {projects} pending projects ",
+  "pendingRecords": "and no pending records | and one pending record | and {records} pending record"
+}

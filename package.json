@@ -1,16 +1,35 @@
 {
-  "name": "app",
+  "name": "geedo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.22",
+    "@fortawesome/free-regular-svg-icons": "^5.10.2",
+    "@fortawesome/free-solid-svg-icons": "^5.10.2",
+    "@fortawesome/vue-fontawesome": "^0.1.7",
+    "bulma": "^0.7.5",
+    "bulma-badge": "^3.0.1",
+    "bulma-steps-component": "^0.5.3",
+    "bulmaswatch": "^0.7.5",
     "core-js": "^2.6.5",
+    "leaflet": "^1.5.1",
+    "leaflet-geosearch": "^2.7.0",
     "vue": "^2.6.10",
+    "vue-file-agent": "^1.1.2",
+    "vue-i18n": "^8.0.0",
+    "vue-multiselect": "^2.1.6",
+    "vue-native-websocket": "^2.0.13",
+    "vue-offcanvas-simple": "^1.0.3",
     "vue-router": "^3.0.3",
+    "vue2-leaflet": "^2.2.1",
+    "vue2-leaflet-geosearch": "^1.0.6",
+    "vue2-leaflet-markercluster": "^3.0.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
@@ -23,6 +42,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
+    "vue-cli-plugin-i18n": "^0.6.0",
     "vue-template-compiler": "^2.6.10"
   }
 }

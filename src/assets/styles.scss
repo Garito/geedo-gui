@@ -1,0 +1,95 @@
+// @charset "utf-8"
+@import "~bulmaswatch/flatly/_variables.scss";
+@import "@/assets/_variables.sass";
+@import "~bulma/bulma.sass";
+@import "~bulma/sass/utilities/functions.sass";
+@import "~bulmaswatch/flatly/_overrides.scss";
+@import "~bulma-badge/dist/css/bulma-badge.sass";
+
+.project {
+  color: $project;
+
+  &.progress {
+    &::-webkit-progress-value {
+      background-color: $project;
+    }
+    &::-moz-progress-bar {
+      background-color: $project;
+    }
+    &::-ms-fill {
+      background-color: $project;
+    }
+  }
+
+  &.button {
+    color: findColorInvert($project);
+    background-color: $project;
+  }
+
+  & [data-badge]::after {
+    background: $project;
+    color: findColorInvert($project);
+  }
+
+  & .steps:not(.is-hollow) .steps-marker:not(.is-hollow) {
+    background-color: $project;
+    color: findColorInvert($project);
+  }
+}
+
+.record {
+  color: $record;
+
+  &.progress {
+    &::-webkit-progress-value {
+      background-color: $record;
+    }
+    &::-moz-progress-bar {
+      background-color: $record;
+    }
+    &::-ms-fill {
+      background-color: $record;
+    }
+  }
+
+  &.button {
+    color: findColorInvert($record);
+    background-color: $record;
+  }
+
+  & [data-badge]::after {
+    background: $record;
+    color: findColorInvert($record);
+  }
+}
+
+.is-fullwidth {
+  width: 100%;
+}
+
+.corner-2-right {
+  margin-left: auto;
+}
+
+.avatar .image svg {
+  width: 100%;
+  height: 100%;
+}
+
+.searchResults {
+  top: 15px;
+}
+
+.vue2leaflet-map {
+  z-index: 10;
+}
+
+.has-badge-project::after {
+  // font-family: "Font Awesome Free";
+  // content: "\f15b";
+  background: $project;
+}
+
+.has-badge-record::after {
+  background: $record;
+}
