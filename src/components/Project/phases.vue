@@ -1,7 +1,7 @@
 <template>
   <div class="phases columns">
     <div class="column is-expanded" :class="{ 'has-text-centered': !Object.keys(phases).length }">
-      <ul class="steps has-content-centered" v-if="Object.keys(phases).length || adding">
+      <ul class="steps" v-if="Object.keys(phases).length || adding">
         <li class="steps-segment" :class="{ 'is-active': idx === (toComplete - 1) || toComplete === 0 }" v-for="([slug, phase], idx) in Object.entries(phases)" :key="slug">
           <span class="steps-marker">
             <span class="icon" v-if="toComplete === idx">

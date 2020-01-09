@@ -6,5 +6,9 @@
   "stakeholdersTitle": "{project}'s stakeholders",
   "welcome": "Hi! ",
   "pendingProjects": "You have no pending projects | You have one pending project | You have {projects} pending projects ",
-  "pendingRecords": "and no pending records | and one pending record | and {records} pending record"
+  "pendingRecords": "and no pending records | and one pending record | and {records} pending record",
+  "usersTitle": "{name}'s users",
+  "ProjectsFileSubject": "A file from the project {name} is waiting for you",
+  "RecordsFileSubject": "A file from the record {} is waiting for you",
+  "FileBody": "Download it visiting\n{url}"
 }

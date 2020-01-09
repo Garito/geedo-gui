@@ -7,6 +7,9 @@
           <h1 class="title project">{{ $t('stakeholdersTitle', { project: obj.name }) }}</h1>
         </div>
       </div>
+
+      <Menu :obj="obj" active="stakeholders" :stats="newsAggrs" />
+
       <div class="columns box">
         <div class="column is-narrow"><h2 class="subtitle">{{ $t('Owner') }}:</h2></div>
         <div class="column is-narrow">
@@ -53,6 +56,7 @@
 </template>
 
 <script>
+const Menu = () => import('@/components/Project/menu')
 const Media = () => import('@/components/User/media')
 const Selector = () => import('@/components/User/selector')
 const ListManager = () => import('@/components/listmanager')
@@ -60,14 +64,15 @@ const Avatar = () => import('@/components/User/avatar')
 
 export default {
   name: 'ProjectStakeholders',
-  components: { Media, Selector, ListManager, Avatar },
+  components: { Menu, Media, Selector, ListManager, Avatar },
   data: () => ({ opId: 'Project/get_stakeholders', editOwner: null, adding: null }),
   computed: {
     obj () { return this.$store.state.context.object },
     url () { return this.$url(this.obj) },
     stakeholders () { return this.$store.state.context.stakeholders },
     roles () { return Object.values(this.$store.state.roles).filter(r => !(r.slug === 'owner' || r.system_only)) },
-    notOwner () { return Object.values(this.$store.state.users).filter(u => u.slug !== this.stakeholders.owner.slug) }
+    notOwner () { return Object.values(this.$store.state.users).filter(u => u.slug !== this.stakeholders.owner.slug) },
+    newsAggrs () { return this.$store.state.context.newsAggrs }
   },
   methods: {
     haveRole (role) { return Object.values(this.$store.state.users).filter(u => u.roles.includes(role.slug + '@' + this.url)) },

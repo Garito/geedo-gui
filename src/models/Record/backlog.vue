@@ -11,6 +11,9 @@
             </h1>
         </div>
       </div>
+
+      <Menu :obj="obj" active="backlog" :stats="newsAggrs" />
+
       <div class="columns">
         <div class="column">
           <Card :obj="log" v-for="log in logs" :key="log.slug" />
@@ -21,15 +24,17 @@
 </template>
 
 <script>
+const Menu = () => import('@/components/Record/menu')
 const Card = () => import('@/components/Backlog/card')
 
 export default {
   name: 'RecordBacklog',
-  components: { Card },
+  components: { Menu, Card },
   computed: {
     obj () { return this.$store.state.context.object },
     loading () { return !this.obj || this.obj.type !== 'Record' },
-    logs () { return this.$store.state.context.logs }
+    logs () { return this.$store.state.context.logs },
+    newsAggrs () { return this.$store.state.context.newsAggrs }
   },
   created () { this.$store.dispatch('load', { opId: 'Record/get_logs', name: 'logs' }) }
 }

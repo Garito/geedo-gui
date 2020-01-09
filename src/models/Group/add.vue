@@ -20,35 +20,88 @@
             <div class="column">
               <div class="columns">
                 <div class="column">
-                  <div id="name"></div>
+                  <div id="Projects_name"></div>
                 </div>
               </div>
               <div class="columns">
                 <div class="column">
-                  <div id="description"></div>
+                  <div id="Projects_code"></div>
                 </div>
               </div>
               <div class="columns">
                 <div class="column">
-                  <div id="code"></div>
+                  <div id="Projects_description"></div>
                 </div>
-              </div>
-              <div class="columns">
-                <div id="record" class="column"></div>
-                <div id="deadline" class="column"></div>
               </div>
               <div class="columns">
                 <div class="column">
-                  <div id="address"></div>
+                  <div id="Projects_requester"></div>
                 </div>
               </div>
               <div class="columns">
-                <div id="areas" class="column"></div>
-                <div id="themes" class="column"></div>
-                <div id="tags" class="column"></div>
+                <div class="column">
+                  <div id="Projects_record"></div>
+                </div>
+                <div class="column">
+                  <div id="Projects_deadline"></div>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <div id="Projects_address"></div>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <div id="Projects_department"></div>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <div id="Projects_tags"></div>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <div id="Projects_resolution"></div>
+                </div>
               </div>
             </div>
           </div>
+
+          <template v-slot:requester="{ formName }">
+            <div :id="formName + '_requester'" class="box" :class="adding.toLowerCase()">
+              <div class="columns">
+                <div class="column">
+                  <FormSelect :name="formName + '_requester'" label="requester" v-model="requester.reqType" :options="peticionaris" :required="true" />
+                </div>
+                <div class="column">
+                  <FormSelect :name="formName + '_subrequester'" label="Name" v-model="requester.subtype" :options="subrequester" :required="true" v-if="requester.reqType && subrequester.length" />
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <FormInput name="requester_name" type="text" label="Name" v-model="requester.name" :required="true" />
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <FormInput name="requester_email" type="email" label="Email" v-model="requester.email" :required="true" />
+                </div>
+                <div class="column">
+                  <FormInput name="requester_phone" type="phone" label="Phone" v-model="requester.phone" :required="true" />
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <FormInput name="requester_address" type="text" label="Address" v-model="requester.address" :required="true" />
+                </div>
+                <div class="column">
+                  <FormInput name="requester_nif" type="text" label="NIF" v-model="requester.nif" :required="true" />
+                </div>
+              </div>
+            </div>
+          </template>
 
           <template v-slot:controls>
             <button type="submit" class="button is-fullwidth" :class="adding.toLowerCase()">
@@ -62,9 +115,18 @@
 </template>
 
 <script>
+import requesters from './requesters.json'
+
 export default {
   name: 'Add',
-  data: () => ({ adding: 'Project' }),
+  data: () => ({
+    adding: 'Project',
+    peticionaris: Object.keys(requesters),
+    requester: { reqType: '', subtype: '', name: '', email: '', phone: '', address: '', nif: '' }
+  }),
+  computed: {
+    subrequester () { return this.reqType ? requesters[this.reqType] : [] }
+  },
   methods: {
     async add (data) {
       let children = { project: 'projects', record: 'records' }[this.adding.toLowerCase()]
@@ -72,7 +134,15 @@ export default {
       let result = await this.$store.dispatch('api', { opId: opId[children], data: data })
       if (result.ok) {
         let rjson = await result.json()
-        this.$router.push(this.$url(rjson.result.object))
+        console.log(rjson)
+        let url = this.$url(rjson.result.object)
+        let opIdPet = { records: 'Record/create_requester', projects: 'Project/create_requester' }
+        let opts = { opId: opIdPet[children], path: url, data: this.requester }
+        let petRes = await this.$store.dispatch('api', opts)
+        if (petRes.ok) {
+          console.log(await petRes.json())
+          this.$router.push(url)
+        }
       }
     }
   }

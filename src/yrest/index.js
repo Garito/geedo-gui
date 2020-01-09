@@ -3,6 +3,8 @@ import { getViews, beforeEach } from './router'
 
 import Plugin from './plugin'
 
+import DynamicLayout from './components/dynamiclayout'
+
 import Tree from './components/Tree/tree'
 import Node from './components/Tree/node'
 
@@ -17,4 +19,4 @@ import FormObject from './components/Form/object'
 
 export default Plugin
 
-export { store, getViews, beforeEach, Tree, Node, Form, FormInput, FormTextarea, FormSelect, FormCheckbox, FormRadio, FormFile, FormObject }
+export { store, getViews, beforeEach, DynamicLayout, Tree, Node, Form, FormInput, FormTextarea, FormSelect, FormCheckbox, FormRadio, FormFile, FormObject }

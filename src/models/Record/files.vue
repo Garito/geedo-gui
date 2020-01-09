@@ -9,13 +9,19 @@
             {{ obj.name }}
             <!-- {{ $t('filesTitle', { project: obj.name }) }} -->
           </h1>
+
+          <Menu :obj="obj" active="files" :stats="newsAggrs" />
+
           <div class="notification has-text-centered" v-if="!filesLoaded">{{ $t('Loading files') }}...</div>
           <div class="columns is-multiline">
             <div class="column is-flex" v-for="(preview, idx) in previews" :key="'preview' + idx">
-              <VueFileAgent :value="preview" :deletable="true" />
+              <div>
+                <div><VueFileAgent :value="preview" :deletable="true" /></div>
+                <div><a @click="download(preview)">{{ $t('Download') }}</a></div>
+              </div>
             </div>
           </div>
-          <FormFile v-model="data" name="files" label="Files" :sr_only="true" :multiple="true" :deletable="true"></FormFile>
+          <FormFile v-model="data" name="files" label="Files" :sr_only="true" :multiple="true" :deletable="true" :helpText="$t('Choose files or drag & drop here')" />
           <div class="control"><button class="button is-fullwidth" type="button" @click="upload">{{ $t('Upload files') }}</button></div>
         </div>
       </div>
@@ -36,13 +42,17 @@ const getFileSize = f => {
   return Math.round((f.stream.length - head.length) * 3 / 4)
 }
 
+const Menu = () => import('@/components/Record/menu')
+
 export default {
   name: 'RecordFiles',
+  components: { Menu },
   data: () => ({ opId: 'Record/call', data: null, filesLoaded: false }),
   computed: {
     obj () { return this.$store.state.context.object },
     loading () { return !this.obj || this.obj.type !== 'Record' },
     files () { return this.$store.state.context.files },
+    newsAggrs () { return this.$store.state.context.newsAggrs },
     previews () {
       return Object.entries(this.files).map(([n, f]) => ({
         name: n.split('/').pop(),
@@ -66,6 +76,12 @@ export default {
         this.$store.commit('setContext', ctx)
         this.data = []
       }
+    },
+    download (file) {
+      let link = document.createElement('a')
+      link.href = file.url
+      link.setAttribute('download', file.name())
+      link.click()
     }
   },
   watch: {

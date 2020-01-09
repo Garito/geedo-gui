@@ -1,10 +1,6 @@
 <template>
   <article class="media">
-    <figure class="media-left" :alt="message.user" :title="message.user">
-      <p class="image is-32x32">
-        <FontAwesomeIcon :icon="[ 'far', 'user-circle' ]" size="lg"></FontAwesomeIcon>
-      </p>
-    </figure>
+    <Avatar class="media-left" :username="message.user" :size="30" />
     <div class="media-content">
       <div class="content">
         <p>{{ message.message }}</p>
@@ -14,8 +10,11 @@
 </template>
 
 <script>
+const Avatar = () => import('vue-avatar')
+
 export default {
   name: 'ChatMessage',
+  components: { Avatar },
   props: { message: Object }
 }
 </script>

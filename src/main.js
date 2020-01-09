@@ -7,7 +7,7 @@ import '@/assets/styles.scss'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faLock, faUpload, faHome, faCheck, faTimes, faMoneyBill, faStar, faPlus, faLink, faCaretLeft, faInfo, faHistory, faUsers, faSearch, faShieldAlt, faUserShield, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons'
+import { faLock, faUpload, faHome, faCheck, faTimes, faMoneyBill, faStar, faPlus, faLink, faCaretLeft, faInfo, faHistory, faUsers, faSearch, faShieldAlt, faUserShield, faToggleOn, faToggleOff, faCloudDownloadAlt } from '@fortawesome/free-solid-svg-icons'
 import { faEnvelope, faEye, faEyeSlash, faUserCircle, faTrashAlt, faEdit, faPlusSquare, faMinusSquare, faShareSquare, faPaperPlane, faFile, faComments, faCheckCircle, faTimesCircle, faBell, faCommentAlt, faCalendarAlt } from '@fortawesome/free-regular-svg-icons'
 
 import VueFileAgent from 'vue-file-agent'
@@ -22,7 +22,9 @@ import FormGeoAddress from '@/components/formgeoaddress'
 
 import i18n from './i18n'
 
-library.add(faLock, faUpload, faHome, faCheck, faTimes, faMoneyBill, faStar, faPlus, faLink, faCaretLeft, faInfo, faHistory, faUsers, faSearch, faShieldAlt, faUserShield, faToggleOn, faToggleOff, faEnvelope, faEye, faEyeSlash, faUserCircle, faTrashAlt, faEdit, faPlusSquare, faMinusSquare, faShareSquare, faPaperPlane, faFile, faComments, faCheckCircle, faTimesCircle, faBell, faCommentAlt, faCalendarAlt)
+import VueClipboard from 'vue-clipboard2'
+
+library.add(faLock, faUpload, faHome, faCheck, faTimes, faMoneyBill, faStar, faPlus, faLink, faCaretLeft, faInfo, faHistory, faUsers, faSearch, faShieldAlt, faUserShield, faToggleOn, faToggleOff, faCloudDownloadAlt, faEnvelope, faEye, faEyeSlash, faUserCircle, faTrashAlt, faEdit, faPlusSquare, faMinusSquare, faShareSquare, faPaperPlane, faFile, faComments, faCheckCircle, faTimesCircle, faBell, faCommentAlt, faCalendarAlt)
 Vue.component('FontAwesomeIcon', FontAwesomeIcon)
 
 Vue.use(VueFileAgent)
@@ -41,6 +43,8 @@ Vue.component('FormRadio', FormRadio)
 Vue.component('FormFile', FormFile)
 Vue.component('FormObject', FormObject)
 Vue.component('FormGeoAddress', FormGeoAddress)
+
+Vue.use(VueClipboard)
 
 const isProd = process.env.NODE_ENV === 'production'
 

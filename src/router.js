@@ -7,8 +7,8 @@ import store from './store'
 Vue.use(Router)
 
 const router = new Router({
-  routes: [ { path: '*', name: 'dispatcher', component: () => import('./views/dispatcher') } ],
-  linkExactActiveClass: 'is-active'
+  routes: [ { path: '*', name: 'dispatcher', component: () => import('./views/dispatcher') } ]
+  // linkExactActiveClass: 'is-active'
 })
 const req = require.context('./models/', true, /\.(vue)$/i)
 router.beforeEach(beforeEach(store, getViews(req)))

@@ -36,7 +36,7 @@ export default {
   name: 'AddressViewer',
   components: { LMap, LTileLayer, LMarker, LPopup, Cluster: Vue2LeafletMarkerCluster },
   props: {
-    addresses: [Array, Object],
+    addresses: Object,
     url: { type: String, default: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png' },
     attribution: { type: String, default: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' }
   },
@@ -45,38 +45,27 @@ export default {
     async updateAddrs () {
       const provider = new EsriProvider()
       let result = {}
-      if (Array.isArray(this.addresses)) {
-        for (let addr of this.addresses) {
-          const searched = await provider.search({ query: addr.address })
-          result[addr] = { center: latLng(searched[0].y, searched[0].x), bounds: searched[0].bounds }
-        }
-      } else {
-        for (let [project, addr] of Object.entries(this.addresses)) {
-          const searched = await provider.search({ query: addr.address })
-          result['<h3 class="is-size-5 is-marginless"><a href="/#' + addr.url + '">' + project + '</a></h3>' + addr.address] = { center: latLng(searched[0].y, searched[0].x), bounds: searched[0].bounds }
-        }
+      for (let [project, addr] of Object.entries(this.addresses)) {
+        const searched = await provider.search({ query: addr.address })
+        result['<h3 class="is-size-5 is-marginless"><a href="/#' + addr.url + '">' + project + '</a></h3>' + addr.address] = { center: latLng(searched[0].y, searched[0].x), bounds: searched[0].bounds }
       }
       this.addrs = result
+      await this.updateBounds()
+    },
+    async updateBounds () {
+      await this.$nextTick()
+      let cluster = this.$refs.cluster
+      if (cluster) {
+        this.bounds = cluster.mapObject.getBounds()
+      }
     }
   },
   watch: {
     addresses: {
-      inmediate: true,
-      handler (val) {
-        if (val) {
-          this.updateAddrs()
-        }
-      }
-    },
-    addrs: {
-      inmediate: true,
+      immediate: true,
       async handler (val) {
         if (val) {
-          let cluster = this.$refs.cluster
-          if (cluster) {
-            await this.$nextTick()
-            this.bounds = cluster.mapObject.getBounds()
-          }
+          await this.updateAddrs()
         }
       }
     }
@@ -89,6 +78,6 @@ export default {
 @import "~leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 .viewer {
-  height:350px;
+  height: 350px;
 }
 </style>

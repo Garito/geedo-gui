@@ -7,9 +7,29 @@
           <h1 class="title project">
             <div class="is-pulled-left">
               <div>
-                <span class="has-text-grey-dark is-size-6">Projecte:</span>&nbsp;
-                <span>{{ project.name }}</span>
-                <a class="icon is-size-6" @click="removeMe">
+                <span class="has-text-grey-dark is-size-6">{{ $t('Project') }}:&nbsp;</span>
+                <span class="pushes-right">{{ project.name }}</span>
+
+                <router-link :to="$url(project) + '/edit'" class="icon is-size-6 is-spaced">
+                  <FontAwesomeIcon :icon="[ 'far', 'edit' ]"></FontAwesomeIcon>
+                </router-link>
+
+                <a class="is-size-6 is-spaced" @click="toggleStatus">
+                  <template v-if="project.canceled">
+                    <span class="icon">
+                      <FontAwesomeIcon icon="toggle-on"></FontAwesomeIcon>
+                    </span>
+                    <span>{{ $t('canceled') }}</span>
+                  </template>
+                  <template v-else>
+                    <span class="icon">
+                      <FontAwesomeIcon icon="toggle-off"></FontAwesomeIcon>
+                    </span>
+                    <span>{{ $t('active') }}</span>
+                  </template>
+                </a>
+
+                <a class="icon is-size-6 is-spaced" @click="removeMe">
                   <FontAwesomeIcon :icon="[ 'far', 'trash-alt' ]"></FontAwesomeIcon>
                 </a>
               </div>
@@ -22,81 +42,96 @@
         </div>
       </div>
 
+      <Menu :obj="project" :stats="newsAggrs" />
+
       <div class="columns">
         <div class="column">
-          <span class="has-text-grey-dark is-size-6">Codi:</span>&nbsp;
+          <span class="has-text-grey-dark is-size-6">{{ $t('Code') }}:&nbsp;</span>
           <span>#{{ project.code }}</span>
         </div>
       </div>
 
-      <span class="has-text-grey-dark">Participants:</span>&nbsp;
-      <Stakeholders class="is-inline-flex" :stakeholders="stakeholders" v-if="stakeholders" />
-
       <div class="columns" v-if="project.description">
         <div class="column">
-          <span class="has-text-grey-dark is-pulled-left">Descripció:&nbsp;</span>
+          <span class="has-text-grey-dark is-pulled-left">{{ $t('Description') }}:&nbsp;</span>
           <p>{{ project.description }}</p>
+        </div>
+      </div>
+
+      <div class="columns is-gapless" v-if="requester">
+        <div class="column is-narrow">
+          <span class="has-text-grey-dark">{{ $t('Requester') }}:&nbsp;</span>
+        </div>
+        <div class="column">
+          <Requester :obj="requester" />
+        </div>
+      </div>
+
+      <div class="columns" v-if="project.department">
+        <div class="column">
+          <span class="has-text-grey-dark is-pulled-left">{{ $t('Department') }}:&nbsp;</span>
+          <span>{{ project.department }}</span>
+        </div>
+      </div>
+
+      <Stakeholders :obj="project" :stakeholders="stakeholders" v-if="stakeholders" />
+
+      <div class="columns">
+        <div class="column is-narrow">
+          <span class="has-text-grey-dark is-size-6">{{ $t('Recorded') }}</span>&nbsp;
+          <span>{{ new Intl.DateTimeFormat(locale).format(new Date(project.record)) }}</span>
+        </div>
+        <div class="column is-narrow">
+          <span class="has-text-grey-dark is-size-6">{{ $t('Deadline') }}</span>&nbsp;
+          <span class="tag">{{ new Intl.DateTimeFormat(locale).format(new Date(project.deadline)) }}</span>
         </div>
       </div>
 
       <Phases :phases="phases || {}" @added="data => add(data, 'phases')" @finished="phase => finish(phase)" @removed="phase => remove(phase)" ref="phases" />
 
-      <div class="level is-mobile">
-        <div class="level-left">
-          <span class="tag is-medium is-white">
-            <span class="level-item">{{ new Intl.DateTimeFormat(locale).format(new Date(project.record)) }}</span>
-          </span>
-        </div>
-        <div class="level-right">
-          <span class="level-item">
-            <span class="tag is-medium">{{ new Intl.DateTimeFormat(locale).format(new Date(project.deadline)) }}</span>
-          </span>
-        </div>
-      </div>
-      <div class="level" v-if="project.areas.length || project.themes.length || project.tags.length">
-        <div class="level-item" v-if="project.areas.length">
-          <span class="tags">
-            <span class="tag" v-for="area in project.areas" :key="project._id + 'area' + area">{{ area }}</span>
-          </span>
-        </div>
-        <div class="level-item" v-if="project.themes.length">
-          <span class="tags">
-            <span class="tag" v-for="theme in project.themes" :key="project._id + 'theme' + theme">{{ theme }}</span>
-          </span>
-        </div>
-        <div class="level-item" v-if="project.tags.length">
+      <div class="columns">
+        <div class="column">
           <span class="tags">
             <span class="tag" v-for="tag in project.tags" :key="project._id + 'tag' + tag">{{ tag }}</span>
           </span>
         </div>
       </div>
+
+      <!-- <Classifiers :obj="project" v-if="project.areas.length || project.themes.length || project.tags.length" /> -->
+
       <div class="columns">
-        <div class="column has-text-centered">
-          <AddressViewer :addresses="[project.address]" />
+        <div class="column">
+          <span class="has-text-grey-dark is-pulled-left">{{ $t('Resolution') }}:&nbsp;</span>
+          <span>{{ project.resolution }}</span>
         </div>
       </div>
+
     </template>
   </div>
 </template>
 
 <script>
+const Menu = () => import('@/components/Project/menu')
 const Stakeholders = () => import('@/components/User/stakeholders')
 const Phases = () => import('@/components/Project/phases')
-const AddressViewer = () => import('@/components/addressviewer')
+// const Classifiers = () => import('@/components/Project/classifiers')
+const Requester = () => import('@/components/User/requester')
 
 export default {
   name: 'Project',
-  components: { Stakeholders, Phases, AddressViewer },
+  components: { Menu, Stakeholders, Phases, Requester },
   data: () => {
     let locale = navigator.language || navigator.userLanguage
-    return { opId: 'Project/call', locale: locale }
+    return { opId: 'Project/call', locale: locale, menu: null }
   },
   computed: {
     project () { return this.$store.state.context.object },
     loading () { return !this.project || this.project.type !== 'Project' },
+    requester () { return this.$store.state.context.requester },
     phases () { return this.$store.state.context.phases },
     stakeholders () { return this.$store.state.context.stakeholders },
-    files () { return this.$store.state.context.files }
+    files () { return this.$store.state.context.files },
+    newsAggrs () { return this.$store.state.context.newsAggrs }
   },
   methods: {
     async add (data, children) {
@@ -118,6 +153,14 @@ export default {
       this.$store.dispatch('remove', { opId: 'Phase/remove', path: this.$url(this.phases[phase]), children: 'phases' })
       this.$refs['phases'].$data.newPhase = ''
     },
+    async toggleStatus () {
+      let opts = this.project.canceled ? { opId: 'Project/reopen' } : { opId: 'Project/cancel' }
+      let result = await this.$store.dispatch('api', opts)
+      if (result.ok) {
+        let rjson = await result.json()
+        this.$set(this.$store.state.context.object, 'canceled', rjson.result || null)
+      }
+    },
     async removeMe () {
       let result = await this.$store.dispatch('api', { opId: 'Project/remove', Project_Path: this.$url(this.project) })
       if (result) {
@@ -128,8 +171,17 @@ export default {
   created () {
     this.$store.dispatch('load', { opId: 'Project/get_phases', name: 'phases' })
     this.$store.dispatch('load', { opId: 'Project/get_stakeholders', name: 'stakeholders' })
-    // let stats = this.$store.dispatch('api', { opId: 'Project/get_stats', Project_Path: this.$url(this.project) })
-    // console.log(stats)
   }
 }
 </script>
+
+<style scoped>
+.pushes-right {
+  padding-right: 1rem;
+}
+
+.is-spaced {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+</style>

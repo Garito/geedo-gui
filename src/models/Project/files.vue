@@ -9,13 +9,19 @@
             {{ project.name }}
             <!-- {{ $t('filesTitle', { project: project.name }) }} -->
           </h1>
+
+          <Menu :obj="project" active="files" :stats="newsAggrs" />
+
           <div class="notification has-text-centered" v-if="!filesLoaded">{{ $t('Loading files') }}...</div>
           <div class="columns is-multiline">
             <div class="column is-flex" v-for="(preview, idx) in previews" :key="'preview' + idx">
-              <VueFileAgent :value="preview" :deletable="true" :helpText="$t('Choose files or drag & drop here')" />
+              <div>
+                <div><VueFileAgent :value="preview" :deletable="true" /></div>
+                <div><a @click="download(preview)">{{ $t('Download') }}</a></div>
+              </div>
             </div>
           </div>
-          <FormFile v-model="data" name="files" label="Files" :sr_only="true" :multiple="true" :deletable="true"></FormFile>
+          <FormFile v-model="data" name="files" label="Files" :sr_only="true" :multiple="true" :deletable="true" :helpText="$t('Choose files or drag & drop here')" />
           <div class="control"><button class="button is-fullwidth" type="button" @click="upload">{{ $t('Upload files') }}</button></div>
         </div>
       </div>
@@ -36,13 +42,16 @@ const getFileSize = f => {
   return Math.round((f.stream.length - head.length) * 3 / 4)
 }
 
+const Menu = () => import('@/components/Project/menu')
 export default {
   name: 'ProjectFiles',
+  components: { Menu },
   data: () => ({ opId: 'Project/call', data: null, filesLoaded: false }),
   computed: {
     project () { return this.$store.state.context.object },
     loading () { return !this.project || this.project.type !== 'Project' },
     files () { return this.$store.state.context.files },
+    newsAggrs () { return this.$store.state.context.newsAggrs },
     previews () {
       return Object.entries(this.files).map(([n, f]) => ({
         name: n.split('/').pop(),
@@ -66,6 +75,12 @@ export default {
         this.$store.commit('setContext', ctx)
         this.data = []
       }
+    },
+    download (file) {
+      let link = document.createElement('a')
+      link.href = file.url
+      link.setAttribute('download', file.name())
+      link.click()
     }
   },
   watch: {

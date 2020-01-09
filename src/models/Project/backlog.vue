@@ -11,6 +11,9 @@
           </h1>
         </div>
       </div>
+
+      <Menu :obj="project" active="backlog" :stats="newsAggrs" />
+
       <div class="columns">
         <div class="column">
           <Card :obj="log" v-for="log in logs" :key="log.slug" />
@@ -21,15 +24,17 @@
 </template>
 
 <script>
+const Menu = () => import('@/components/Project/menu')
 const Card = () => import('@/components/Backlog/card')
 
 export default {
   name: 'ProjectBacklog',
-  components: { Card },
+  components: { Menu, Card },
   computed: {
     project () { return this.$store.state.context.object },
     loading () { return !this.project || this.project.type !== 'Project' },
-    logs () { return this.$store.state.context.logs }
+    logs () { return this.$store.state.context.logs },
+    newsAggrs () { return this.$store.state.context.newsAggrs }
   },
   created () { this.$store.dispatch('load', { opId: 'Project/get_logs', name: 'logs' }) }
 }

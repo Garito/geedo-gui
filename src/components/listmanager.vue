@@ -8,9 +8,7 @@
         <slot name="nav-extra"></slot>
         <div class="column is-narrow" v-if="(opId && $store.getters.can(opId)) || schema">
           <slot name="addButton">
-            <button class="button is-primary" type="button" :disabled="adding" @click="adding = true">
-              {{ addBtnTitle }}
-            </button>
+            <button class="button is-primary" type="button" :disabled="adding" @click="adding = true">{{ addBtnTitle }}</button>
           </slot>
         </div>
       </div>
@@ -31,12 +29,10 @@
               <template v-slot:controls>
                 <div id="controls" class="columns is-mobile">
                   <div class="column">
-                    <button type="submit" class="button is-primary is-fullwidth">
-                      {{ submitBtnTitle }}
-                    </button>
+                    <button type="submit" class="button is-primary is-fullwidth">{{ submitBtnTitle }}</button>
                   </div>
                   <div class="column">
-                    <button type="button" class="button is-fullwidth" @click="adding = false">Cancel</button>
+                    <button type="button" class="button is-fullwidth" @click="adding = false">{{ cancelBtn }}</button>
                   </div>
                 </div>
               </template>
@@ -82,6 +78,7 @@ export default {
     addTitle: String,
     addBtnTitle: { type: String, default: 'Add' },
     submitBtnTitle: { type: String, default: 'Add it' },
+    cancelBtn: { type: String, default: 'Cancel' },
     schema: Object,
     opId: String,
     value: [Array, Object]

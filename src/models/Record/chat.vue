@@ -7,6 +7,9 @@
         {{ obj.name }}
         <!-- {{ $t('chatTitle', { project: obj.name }) }} -->
       </h1>
+
+      <Menu :obj="obj" active="chat" :stats="newsAggrs" />
+
       <div class="columns">
         <div class="column is-expanded messages">
           <Chat :room="$url(obj)" />
@@ -22,22 +25,24 @@
 </template>
 
 <script>
+const Menu = () => import('@/components/Record/menu')
 const Chat = () => import('@/components/Chat/chat')
 const Avatar = () => import('@/components/User/avatar')
 
 export default {
   name: 'RecordChat',
-  components: { Chat, Avatar },
+  components: { Menu, Chat, Avatar },
   computed: {
     obj () { return this.$store.state.context.object },
     loading () { return !this.obj || this.obj.type !== 'Record' },
-    users () { return this.$store.state.socket.users }
+    users () { return this.$store.state.socket.users },
+    newsAggrs () { return this.$store.state.context.newsAggrs }
   }
 }
 </script>
 
 <style scoped>
 .messages {
-  height: 80vh;
+  height: 75vh;
 }
 </style>

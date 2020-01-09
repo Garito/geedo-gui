@@ -6,8 +6,13 @@
       </router-link>
       <template v-if="actor">
         <span class="navbar-item welcome" v-if="$route.path === '/'">
-          {{ $t('welcome') }} {{ $t('you have') }}&nbsp;<span class="project has-text-weight-bold">{{ $tc('pendingProjects', projects, { projects: projects }) }}</span>&nbsp;{{ $t('and') }}&nbsp;<span class="record has-text-weight-bold">{{ $tc('pendingRecords', records, { records: records }) }}</span>&nbsp;{{ $t('opened') }}
+          {{ $t('welcome') }} 
+          <template v-if="myStuff">{{ $t('you have') }}</template>
+          <template v-else>{{ $t('there are') }}</template>
+          &nbsp;<span class="project has-text-weight-bold">{{ $tc('pendingProjects', projects, { projects: projects }) }}</span>&nbsp;{{ $t('and') }}&nbsp;<span class="record has-text-weight-bold">{{ $tc('pendingRecords', records, { records: records }) }}</span>&nbsp;{{ $t('opened') }}
         </span>
+
+        <span class="navbar-item adder" v-if="$route.path === '/add'">{{ $t('Add recommendation') }}</span>
         <Search class="navbar-item searchBox corner-2-right is-hidden-desktop" />
         <Avatar :obj="actor" class="navbar-item is-hidden-desktop" />
       </template>

@@ -3,19 +3,21 @@
     <div class="notification is-danger" v-if="errors && errors._message">{{ errors._message }}</div>
     <slot></slot>
     <template v-if="loaded">
-      <template v-for="[pName, schema] in fields">
-        <slot :name="pName" :form-name="name" :schema="schema" :data="data[pName]" :attrs="fieldAttrs(pName, schema)">
-          <component :key="name + pName" :is="component(schema)" v-bind="fieldAttrs(pName, schema)" :ref="pName" v-model="data[pName]" @input="data => $emit('input', { name: pName, data: data})">
-            <template v-slot:addOnRight="{ field }" v-if="schema.format === 'password'">
-              <div class="control">
-                <button class="button has-text-grey" type="button" @click="field.toggleReveal()">
-                  <FontAwesomeIcon :icon="[ 'far', field.reveal ? 'eye-slash' : 'eye' ]"></FontAwesomeIcon>
-                </button>
-              </div>
-            </template>
-          </component>
-        </slot>
-      </template>
+      <div :id="name + '_data'">
+        <template v-for="[pName, schema] in fields">
+          <slot :name="pName" :formName="name" :schema="schema" :data="data[pName]" :attrs="fieldAttrs(pName, schema)">
+            <component :id="name + '_' + pName" :key="name + pName" :is="component(schema)" v-bind="fieldAttrs(pName, schema)" :ref="pName" v-model="data[pName]" @input="data => $emit('input', { name: pName, data: data})">
+              <template v-slot:addOnRight="{ field }" v-if="schema.format === 'password'">
+                <div class="control">
+                  <button class="button has-text-grey" type="button" @click="field.toggleReveal()">
+                    <FontAwesomeIcon :icon="[ 'far', field.reveal ? 'eye-slash' : 'eye' ]"></FontAwesomeIcon>
+                  </button>
+                </div>
+              </template>
+            </component>
+          </slot>
+        </template>
+      </div>
 
       <slot name="postForm"></slot>
 
@@ -39,7 +41,7 @@ export default {
     noLabels: Boolean,
     errors: Object
   },
-  data: () => ({ loaded: false, data: {} }),
+  data: () => ({ loaded: false, data: {}, spreaded: false }),
   computed: {
     fields () {
       let schema = this.schema
@@ -66,6 +68,8 @@ export default {
         } else {
           return 'FormRadios'
         }
+      } else if (schema.type === 'string' && Object.keys(schema).includes('x-options')) {
+        return 'FormSelect'
       } else if (schema.type === 'string' && schema.maxLength > 50) {
         return 'FormTextarea'
       } else if (schema.type === 'string' && schema['x-format'] === 'GeoAddress' && this.$options.components.FormGeoAddress) {
@@ -126,6 +130,10 @@ export default {
         if (schema.Enum) {
           attrs.options = schema.Enum
         }
+
+        if (Object.keys(schema).includes('x-options')) {
+          attrs.options = schema['x-options'].result
+        }
       } else if (schema.type === 'number') {
         attrs.type = 'number'
         attrs.step = 0.1
@@ -137,12 +145,14 @@ export default {
         }
       } else if (schema.type === 'array') {
         attrs.multiple = true
-        attrs.options = schema['x-options'].result || []
-        if (schema['x-options'].searchable) {
-          attrs.searchable = true
-        }
-        if (schema['x-options'].taggable) {
-          attrs.taggable = true
+        if (Object.keys(schema).includes('x-options')) {
+          attrs.options = schema['x-options'].result || []
+          if (schema['x-options'].searchable) {
+            attrs.searchable = true
+          }
+          if (schema['x-options'].taggable) {
+            attrs.taggable = true
+          }
         }
       }
 
@@ -170,25 +180,34 @@ export default {
       this.$emit('submit', data)
     },
     spread () {
-      let layout = document.getElementById(this.name + '_layout')
-      if (layout) {
-        for (var name of Object.keys(this.schema.properties)) {
-          let el = layout.querySelector('#' + name)
-          if (el && this.$refs[name]) {
-            el.appendChild(this.$refs[name][0].$el)
+      let tmpl = document.getElementById(this.name + '_layout')
+      let data = document.getElementById(this.name + '_data')
+      if (tmpl && data) {
+        for (var el of tmpl.querySelectorAll('[id]')) {
+          let orig = data.querySelector('#' + el.id)
+          let dest = tmpl.querySelector('#' + el.id)
+          if (orig && dest) {
+            if (orig.classList.contains('no-wrapper')) {
+              orig.childNodes.forEach(c => dest.parentNode.appendChild(c))
+            } else {
+              dest.parentNode.replaceChild(orig, dest)
+            }
           }
-        }
-        let controls = document.getElementById('controls')
-        let ctrlsLayout = layout.querySelector('#controls_here')
-        if (controls && ctrlsLayout) {
-          ctrlsLayout.appendChild(controls)
         }
       }
     }
   },
-  async mounted () { this.spread() },
-  async updated () { this.spread() },
-  async created () {
+  beforeDestroy () {
+    this.spreaded = false
+  },
+  async updated () {
+    if (this.loaded && !this.spreaded) {
+      await this.$nextTick()
+      this.spread()
+      this.spreaded = true
+    }
+  },
+  async mounted () {
     if (this.value) {
       this.data = this.value
     }

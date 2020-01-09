@@ -33,17 +33,20 @@ export default {
   },
   data: () => ({ val: null, searched: null }),
   methods: {
-    async input (val) {
-      if (val.length > 3) {
+    async input () {
+      if (this.val.length > 3) {
         const provider = new EsriProvider()
-        this.searched = await provider.search({ query: val })
+        this.searched = await provider.search({ query: this.val })
       }
 
-      this.$emit('input', val)
+      console.log(this.val)
+      console.log(this.searched)
+      this.$emit('input', this.val)
     },
     select (search) {
       this.val = search.label
       this.searched = null
+      this.$emit('input', this.val)
     }
   },
   created () { this.val = this.value }

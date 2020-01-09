@@ -16,7 +16,27 @@
                 </h2>
                 <div class="columns is-multiline">
                   <div class="column is-flex" v-for="file in Object.entries(project.files)" :key="file[0]">
-                    <VueFileAgent :value="preview(file)" :deletable="true" />
+                    <div>
+                      <div class="columns">
+                        <div class="column">
+                          <VueFileAgent :value="preview(file)" :deletable="true" />
+                        </div>
+                      </div>
+                      <div class="columns has-text-centered">
+                        <div class="column is-size-4">
+                          <a @click="download(preview(file))">
+                            <span class="icon"><FontAwesomeIcon icon="cloud-download-alt"></FontAwesomeIcon></span>
+                          </a>
+                        </div>
+                        <div class="column is-size-4">
+                          <a :href="'mailto:?subject=' + encodeURIComponent($t(project.obj.type + 'sFileSubject', { name: project.obj.name })) + '&body=' + encodeURIComponent($t('FileBody', { url: 'http://example.com' }))">
+                            <span class="icon">
+                              <FontAwesomeIcon :icon="[ 'far' , 'paper-plane' ]"></FontAwesomeIcon>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -43,7 +63,13 @@ export default {
     files_by_project () { return this.$store.state.context.files_by_project }
   },
   methods: {
-    preview ([name, file]) { return { name: name.split('/').pop(), size: getFileSize(file), type: file.content_type, url: file.stream } }
+    preview ([name, file]) { return { name: name.split('/').pop(), size: getFileSize(file), type: file.content_type, url: file.stream } },
+    download (file) {
+      let link = document.createElement('a')
+      link.href = file.url
+      link.setAttribute('download', file.name)
+      link.click()
+    }
   },
   async created () {
     await this.$store.dispatch('load', { opId: this.opId, name: 'files_by_project' })
