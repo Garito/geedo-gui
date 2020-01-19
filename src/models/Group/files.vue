@@ -7,6 +7,25 @@
           <h1 class="title has-text-primary">{{ $t('filesTitle', { project: obj.name }) }}</h1>
           <div class="notification has-text-centered" v-if="!filesLoaded">{{ $t('Loading files') }}...</div>
           <template v-else>
+            <div class="columns">
+              <div class="column">
+                <div class="box">
+                  <div class="columns is-gapless">
+                    <div class="column is-12-mobile is-4-tablet">
+                      <div class="field">
+                        <label class="label">Search files</label>
+                        <div class="control">
+                          <input class="input" type="text" placeholder="Filename">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="total_files < 1">
+              <h1>No files added yet</h1>
+            </div>
             <div class="columns" v-for="project in Object.values(this.files_by_project)" :key="project.obj._id">
               <div class="column">
                 <h2 class="subtitle">
@@ -62,7 +81,8 @@ export default {
   computed: {
     obj () { return this.$store.state.context.object },
     loading () { return !this.obj || this.obj.type !== 'Group' },
-    files_by_project () { return this.$store.state.context.files_by_project }
+    files_by_project () { return this.$store.state.context.files_by_project },
+    total_files () { return Object.keys(this.files_by_project).length || 0 }
   },
   methods: {
     preview ([name, file]) { return { name: name.split('/').pop(), size: getFileSize(file), type: file.content_type, url: file.stream } },
