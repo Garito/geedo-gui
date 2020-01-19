@@ -14,10 +14,23 @@
 
           <div class="notification has-text-centered" v-if="!filesLoaded">{{ $t('Loading files') }}...</div>
           <div class="columns is-multiline">
-            <div class="column is-flex" v-for="(preview, idx) in previews" :key="'preview' + idx">
-              <div>
-                <div><VueFileAgent :value="preview" :deletable="true" /></div>
-                <div><a @click="download(preview)">{{ $t('Download') }}</a></div>
+            <div class="column file-list">
+              <div class="file-item" v-for="(preview, idx) in previews" :key="'preview' + idx">
+                <div>
+                  <div class="columns is-gapless is-marginless">
+                    <div class="column">
+                      <VueFileAgent :value="preview" :deletable="true" />
+                    </div>
+                  </div>
+                  <div class="columns is-gapless file-item__actions">
+                    <div class="column">
+                      <a @click="download(preview)">
+                        <span class="icon"><FontAwesomeIcon icon="cloud-download-alt" size="lg"></FontAwesomeIcon></span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>

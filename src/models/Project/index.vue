@@ -30,7 +30,7 @@
                 </a>
 
                 <a class="icon is-size-6 is-spaced" @click="removeMe">
-                  <FontAwesomeIcon :icon="[ 'far', 'trash-alt' ]"></FontAwesomeIcon>
+                  <FontAwesomeIcon :icon="[ 'far', 'trash-alt' ]" :style="{ color: 'red' }"></FontAwesomeIcon>
                 </a>
               </div>
             </div>
@@ -46,21 +46,22 @@
 
       <div class="columns">
         <div class="column">
-          <span class="has-text-grey-dark is-size-6">{{ $t('Code') }}:&nbsp;</span>
-          <span>#{{ project.code }}</span>
+          <span class="tag">
+            {{ $t('Code') }}: #{{ project.code }}
+          </span>
         </div>
       </div>
 
       <div class="columns" v-if="project.description">
         <div class="column">
-          <span class="has-text-grey-dark is-pulled-left">{{ $t('Description') }}:&nbsp;</span>
-          <p>{{ project.description }}</p>
+          <span class="has-text-black-ter is-size-3">{{ $t('Description') }}:&nbsp;</span>
+          <p class="is-size-5">{{ project.description }}</p>
         </div>
       </div>
 
-      <div class="columns is-gapless" v-if="requester">
+      <div class="columns" v-if="requester">
         <div class="column is-narrow">
-          <span class="has-text-grey-dark">{{ $t('Requester') }}:&nbsp;</span>
+          <span class="has-text-black-ter is-size-4">{{ $t('Requester') }}:&nbsp;</span>
         </div>
         <div class="column">
           <Requester :obj="requester" />
@@ -69,7 +70,7 @@
 
       <div class="columns" v-if="project.department">
         <div class="column">
-          <span class="has-text-grey-dark is-pulled-left">{{ $t('Department') }}:&nbsp;</span>
+          <span class="has-text-black-ter is-size-4">{{ $t('Department') }}:&nbsp;</span>
           <span>{{ project.department }}</span>
         </div>
       </div>
@@ -78,11 +79,11 @@
 
       <div class="columns">
         <div class="column is-narrow">
-          <span class="has-text-grey-dark is-size-6">{{ $t('Recorded') }}</span>&nbsp;
+          <span class="has-text-black-ter is-size-5">{{ $t('Recorded') }}</span>&nbsp;
           <span>{{ new Intl.DateTimeFormat(locale).format(new Date(project.record)) }}</span>
         </div>
         <div class="column is-narrow">
-          <span class="has-text-grey-dark is-size-6">{{ $t('Deadline') }}</span>&nbsp;
+          <span class="has-text-black-ter is-size-5">{{ $t('Deadline') }}</span>&nbsp;
           <span class="tag">{{ new Intl.DateTimeFormat(locale).format(new Date(project.deadline)) }}</span>
         </div>
       </div>
@@ -101,8 +102,8 @@
 
       <div class="columns">
         <div class="column">
-          <span class="has-text-grey-dark is-pulled-left">{{ $t('Resolution') }}:&nbsp;</span>
-          <span>{{ project.resolution }}</span>
+          <h2 class="is-size-3 has-text-black-ter">{{ $t('Resolution') }}:&nbsp;</h2>
+          <span class="is-size-5">{{ project.resolution }}</span>
         </div>
       </div>
 
@@ -150,8 +151,10 @@ export default {
       }
     },
     remove (phase) {
-      this.$store.dispatch('remove', { opId: 'Phase/remove', path: this.$url(this.phases[phase]), children: 'phases' })
-      this.$refs['phases'].$data.newPhase = ''
+      if (window.confirm('Are you sure?')) {
+        this.$store.dispatch('remove', { opId: 'Phase/remove', path: this.$url(this.phases[phase]), children: 'phases' })
+        this.$refs['phases'].$data.newPhase = ''
+      }
     },
     async toggleStatus () {
       let opts = this.project.canceled ? { opId: 'Project/reopen' } : { opId: 'Project/cancel' }
@@ -162,9 +165,11 @@ export default {
       }
     },
     async removeMe () {
-      let result = await this.$store.dispatch('api', { opId: 'Project/remove', Project_Path: this.$url(this.project) })
-      if (result) {
-        this.$router.push('/')
+      if (window.confirm('Are you sure?')) {
+        let result = await this.$store.dispatch('api', { opId: 'Project/remove', Project_Path: this.$url(this.project) })
+        if (result) {
+          this.$router.push('/')
+        }
       }
     }
   },
@@ -175,7 +180,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .pushes-right {
   padding-right: 1rem;
 }

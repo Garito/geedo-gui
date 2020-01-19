@@ -15,25 +15,27 @@
                   </router-link>
                 </h2>
                 <div class="columns is-multiline">
-                  <div class="column is-flex" v-for="file in Object.entries(project.files)" :key="file[0]">
-                    <div>
-                      <div class="columns">
-                        <div class="column">
-                          <VueFileAgent :value="preview(file)" :deletable="true" />
+                  <div class="file-list">
+                    <div class="file-item is-flex" v-for="file in Object.entries(project.files)" :key="file[0]">
+                      <div>
+                        <div class="columns is-gapless is-marginless">
+                          <div class="column">
+                            <VueFileAgent :value="preview(file)" :deletable="true" />
+                          </div>
                         </div>
-                      </div>
-                      <div class="columns has-text-centered">
-                        <div class="column is-size-4">
-                          <a @click="download(preview(file))">
-                            <span class="icon"><FontAwesomeIcon icon="cloud-download-alt"></FontAwesomeIcon></span>
-                          </a>
-                        </div>
-                        <div class="column is-size-4">
-                          <a :href="'mailto:?subject=' + encodeURIComponent($t(project.obj.type + 'sFileSubject', { name: project.obj.name })) + '&body=' + encodeURIComponent($t('FileBody', { url: 'http://example.com' }))">
-                            <span class="icon">
-                              <FontAwesomeIcon :icon="[ 'far' , 'paper-plane' ]"></FontAwesomeIcon>
-                            </span>
-                          </a>
+                        <div class="columns is-gapless file-item__actions">
+                          <div class="column">
+                            <a @click="download(preview(file))">
+                              <span class="icon"><FontAwesomeIcon icon="cloud-download-alt" size="lg"></FontAwesomeIcon></span>
+                            </a>
+                          </div>
+<!--                          <div class="column is-size-4">-->
+<!--                            <a :href="'mailto:?subject=' + encodeURIComponent($t(project.obj.type + 'sFileSubject', { name: project.obj.name })) + '&body=' + encodeURIComponent($t('FileBody', { url: 'http://example.com' }))">-->
+<!--                            <span class="icon">-->
+<!--                              <FontAwesomeIcon :icon="[ 'far' , 'paper-plane' ]"></FontAwesomeIcon>-->
+<!--                            </span>-->
+<!--                            </a>-->
+<!--                          </div>-->
                         </div>
                       </div>
                     </div>

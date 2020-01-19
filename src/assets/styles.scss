@@ -1,6 +1,6 @@
 // @charset "utf-8"
 @import "~bulmaswatch/flatly/_variables.scss";
-@import "@/assets/_variables.sass";
+@import "_variables.sass";
 @import "~bulma/bulma.sass";
 @import "~bulma/sass/utilities/functions.sass";
 @import "~bulmaswatch/flatly/_overrides.scss";
@@ -92,4 +92,21 @@
 
 .has-badge-record::after {
   background: $record;
+}
+
+h1 {
+  font-size: 4rem;
+}
+h2 {
+  font-size: 2rem;
+}
+.file-list {
+  display: flex;
+}
+.file-item {
+  display: inline-block;
+  margin: 10px;
+  .file-item__actions {
+    margin-top: 5px;
+  }
 }
