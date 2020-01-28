@@ -1,5 +1,5 @@
 <template>
-  <div class="search">
+  <div class="search" ref="searchBox">
     <FormInput name="search" class="is-marginless" label="Search box" v-model="search" sr_only type="search" :icons="{ left: 'search' }" @focus="searching" @blur="unsearching" ref="search">
       <template v-slot:addOnRight>
         <button class="button" type="button">
@@ -64,7 +64,17 @@ export default {
     start_date: null,
     end_date: null
   }),
+  mounted () {
+    document.addEventListener(`click`, this.onClickOutside);
+  },
   methods: {
+    onClickOutside (evt) {
+      const { searchBox } = this.$refs
+      if (!searchBox || searchBox.contains(evt.target)) return
+      this.ranging = false
+      this.search = ''
+      this.founded = {}
+    },
     getLeader (hit) {
       let url = this.$url(hit)
       return Object.values(this.$store.state.users).find(u => u.roles.includes('owner@' + url))

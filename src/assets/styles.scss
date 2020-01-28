@@ -102,6 +102,7 @@ h2 {
 }
 .file-list {
   display: flex;
+  flex-wrap: wrap;
 }
 .file-item {
   display: inline-block;

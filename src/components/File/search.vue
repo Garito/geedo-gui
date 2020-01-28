@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="$url(obj) + '/files'" tag="div" class="media">
+  <router-link :to="$url(obj.parent) + '/files'" tag="div" class="media">
     <div class="media-left"><VueFileAgent :value="preview" /></div>
     <div class="media-content">
       <div class="content">
@@ -22,7 +22,7 @@ export default {
   computed: {
     preview () {
       return { name: this.obj.filename.split('/').pop(), size: getFileSize(this.obj), type: this.obj.content_type, url: this.obj.stream }
-    },
+    }
   }
 }
 </script>

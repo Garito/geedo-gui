@@ -7,28 +7,28 @@
           <h1 class="title has-text-primary">{{ $t('filesTitle', { project: obj.name }) }}</h1>
           <div class="notification has-text-centered" v-if="!filesLoaded">{{ $t('Loading files') }}...</div>
           <template v-else>
-            <div class="columns">
-              <div class="column">
-                <div class="box">
-                  <div class="columns is-gapless">
-                    <div class="column is-12-mobile is-4-tablet">
-                      <div class="field">
-                        <label class="label">Search files</label>
-                        <div class="control">
-                          <input class="input" type="text" placeholder="Filename">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+<!--            <div class="columns">-->
+<!--              <div class="column">-->
+<!--                <div class="box">-->
+<!--                  <div class="columns is-gapless">-->
+<!--                    <div class="column is-12-mobile is-4-tablet">-->
+<!--                      <div class="field">-->
+<!--                        <label class="label">Search files</label>-->
+<!--                        <div class="control">-->
+<!--                          <input class="input" type="text" placeholder="Filename" v-model="fileSearchQuery" v-on:keyup="onSearchKeyUp">-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
             <div v-if="total_files < 1">
               <h1>No files added yet</h1>
             </div>
-            <div class="columns" v-for="project in Object.values(this.files_by_project)" :key="project.obj._id">
+            <div class="columns" v-for="project in filtered_files" :key="project.obj._id">
               <div class="column">
-                <h2 class="subtitle">
+                <h2 class="subtitle is-size-4">
                   <router-link :to="$url(project.obj) + '/files'" :class="project.obj.type.toLowerCase()">
                     {{ project.obj.name }}
                   </router-link>
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import file from "../../yrest/components/Form/file";
+
 const getFileSize = f => {
   let head = 'data:' + f.content_type + ';base64,'
   return Math.round((f.stream.length - head.length) * 3 / 4)
@@ -77,11 +79,32 @@ const getFileSize = f => {
 
 export default {
   name: 'GroupFiles',
-  data: () => ({ opId: 'Root/files_by_project', filesLoaded: false }),
+  data: function () {
+    return { opId: 'Root/files_by_project', filesLoaded: false, fileSearchQuery: '' }
+  },
   computed: {
     obj () { return this.$store.state.context.object },
     loading () { return !this.obj || this.obj.type !== 'Group' },
     files_by_project () { return this.$store.state.context.files_by_project },
+    filtered_files () {
+      if (this.fileSearchQuery === '') {
+        return this.files_by_project
+      } else {
+        const filesByProject = Object.values(this.files_by_project)
+        let filteredFiles = []
+        for (let project of filesByProject) {
+          if (Object.keys(project.files).find(fileName => fileName === this.fileSearchQuery)) {
+            for (let [key, value] of Object.entries(project.files)) {
+              if (key === this.fileSearchQuery) {
+                console.log(`${key}`)
+                filteredFiles.push(value)
+              }
+            }
+          }
+        }
+        return filteredFiles
+      }
+    },
     total_files () { return Object.keys(this.files_by_project).length || 0 }
   },
   methods: {
@@ -91,6 +114,9 @@ export default {
       link.href = file.url
       link.setAttribute('download', file.name)
       link.click()
+    },
+    onSearchKeyUp () {
+      // nothing
     }
   },
   async created () {
