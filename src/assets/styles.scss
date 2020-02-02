@@ -1,10 +1,51 @@
 // @charset "utf-8"
 @import "~bulmaswatch/flatly/_variables.scss";
-@import "_variables.sass";
+@import "variables";
 @import "~bulma/bulma.sass";
 @import "~bulma/sass/utilities/functions.sass";
+@import "~bulmaswatch/flatly/variables";
 @import "~bulmaswatch/flatly/_overrides.scss";
 @import "~bulma-badge/dist/css/bulma-badge.sass";
+@import "colors";
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  display: flex;
+  flex-flow: column;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.navbar {
+  border-radius: 0;
+}
+#app {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.navbar {
+  a.navbar-item:first-of-type {
+    padding: 0 4px;
+    &:hover {
+      background: $primary;
+    }
+  }
+}
+
+.is-flex, .is-inline-flex {
+  &.align-items-center {
+    align-items: center;
+  }
+}
+
 
 .project {
   color: $project;

@@ -11,7 +11,7 @@
             </span>
           </span>
           <div class="steps-content">
-            <div class="tag is-size-5">
+            <div class="tag is-size-6">
               <span class="icon" v-if="!phase.finished && !adding">
                 <a @click="$emit('removed', slug)">
                   <FontAwesomeIcon :icon="[ 'far', 'trash-alt' ]" size="xs" :style="{ color: 'red' }"></FontAwesomeIcon>
@@ -81,4 +81,12 @@ $steps-active-color: $project;
 .finisher:hover {
   color: $primary;
 }
+  .steps-content {
+    .tag {
+      @include from($tablet) {
+        margin-top: 2px;
+        transform: translateX(-50%);
+      }
+    }
+  }
 </style>

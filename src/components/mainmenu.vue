@@ -1,15 +1,15 @@
 <template>
   <div class="section">
     <template v-if="obj">
-      <router-link to="/add" tag="div" class="command has-text-centered">
+      <router-link to="/add" tag="div" class="command has-text-centered color-white">
         <div class="icon">
-          <FontAwesomeIcon :icon="[ 'far', 'plus-square']" size="2x"></FontAwesomeIcon>
+          <FontAwesomeIcon :icon="[ 'far', 'plus-square']" :style="{ color: 'white' }" size="2x"></FontAwesomeIcon>
         </div>
         <div class="is-hidden-mobile">{{ $t('Add') }}</div>
       </router-link>
-      <router-link to="/files" tag="div" class="command has-text-centered">
+      <router-link to="/files" tag="div" class="command has-text-centered color-white">
         <div class="icon" :data-badge="newsAggrs.files || null">
-          <FontAwesomeIcon :icon="[ 'far', 'file']" size="2x"></FontAwesomeIcon>
+          <FontAwesomeIcon :icon="[ 'far', 'file']" :style="{ color: 'white' }" size="2x"></FontAwesomeIcon>
         </div>
         <div class="is-hidden-mobile">{{ $t('Files') }}</div>
       </router-link>
@@ -31,15 +31,15 @@
         </div>
         <div class="is-hidden-mobile">{{ $t('Users') }}</div>
       </router-link> -->
-      <router-link to="/permissions" tag="div" class="command has-text-centered">
+      <router-link to="/permissions" tag="div" class="command has-text-centered color-white">
         <div class="icon">
-          <FontAwesomeIcon icon="shield-alt" size="2x"></FontAwesomeIcon>
+          <FontAwesomeIcon icon="shield-alt" :style="{ color: 'white' }" size="2x"></FontAwesomeIcon>
         </div>
         <div class="is-hidden-mobile">{{ $t('Permissions') }}</div>
       </router-link>
-      <router-link to="/roles" tag="div" class="command has-text-centered">
+      <router-link to="/roles" tag="div" class="command has-text-centered color-white">
         <div class="icon">
-          <FontAwesomeIcon icon="user-shield" size="2x"></FontAwesomeIcon>
+          <FontAwesomeIcon icon="user-shield" :style="{ color: 'white' }" size="2x"></FontAwesomeIcon>
         </div>
         <div class="is-hidden-mobile">{{ $t('Roles') }}</div>
       </router-link>

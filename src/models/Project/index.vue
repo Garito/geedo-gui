@@ -11,26 +11,26 @@
                 <span class="pushes-right">{{ project.name }}</span>
 
                 <router-link :to="$url(project) + '/edit'" class="icon is-size-6 is-spaced">
-                  <FontAwesomeIcon :icon="[ 'far', 'edit' ]"></FontAwesomeIcon>
+                  <FontAwesomeIcon :icon="[ 'far', 'edit' ]" size="lg"></FontAwesomeIcon>
                 </router-link>
 
-                <a class="is-size-6 is-spaced" @click="toggleStatus">
+                <a class="is-size-6 is-spaced is-inline-flex align-items-center" @click="toggleStatus">
                   <template v-if="project.canceled">
                     <span class="icon">
-                      <FontAwesomeIcon icon="toggle-on"></FontAwesomeIcon>
+                      <FontAwesomeIcon icon="toggle-on" size="lg"></FontAwesomeIcon>
                     </span>
-                    <span>{{ $t('canceled') }}</span>
+                    <span>&nbsp;{{ $t('archived') }}</span>
                   </template>
                   <template v-else>
                     <span class="icon">
-                      <FontAwesomeIcon icon="toggle-off"></FontAwesomeIcon>
+                      <FontAwesomeIcon icon="toggle-off" size="lg"></FontAwesomeIcon>
                     </span>
-                    <span>{{ $t('active') }}</span>
+                    <span>&nbsp;{{ $t('active') }}</span>
                   </template>
                 </a>
 
-                <a class="icon is-size-6 is-spaced" @click="removeMe">
-                  <FontAwesomeIcon :icon="[ 'far', 'trash-alt' ]" :style="{ color: 'red' }"></FontAwesomeIcon>
+                <a class="icon is-size-6 is-spaced is-inline-flex" @click="removeMe">
+                  <FontAwesomeIcon :icon="[ 'far', 'trash-alt' ]" :style="{ color: 'red' }" size="lg"></FontAwesomeIcon>
                 </a>
               </div>
             </div>
@@ -80,7 +80,7 @@
       <div class="columns">
         <div class="column is-narrow">
           <span class="has-text-black-ter is-size-5">{{ $t('Recorded') }}</span>&nbsp;
-          <span>{{ new Intl.DateTimeFormat(locale).format(new Date(project.record)) }}</span>
+          <span class="tag">{{ new Intl.DateTimeFormat(locale).format(new Date(project.record)) }}</span>
         </div>
         <div class="column is-narrow">
           <span class="has-text-black-ter is-size-5">{{ $t('Deadline') }}</span>&nbsp;

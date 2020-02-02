@@ -11,7 +11,7 @@
       <Menu :obj="obj" active="stakeholders" :stats="newsAggrs" />
 
       <div class="columns box">
-        <div class="column is-narrow"><h2 class="subtitle">{{ $t('Owner') }}:</h2></div>
+        <div class="column is-narrow"><h2 class="has-text-black-ter is-size-4">{{ $t('Owner') }}:</h2></div>
         <div class="column is-narrow">
           <Media :obj="stakeholders.owner" :imgSize="32">
             <template v-slot="{ obj }">

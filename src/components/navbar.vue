@@ -1,12 +1,12 @@
 <template>
-  <nav class="navbar is-white" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand is-white">
-      <router-link to="/" class="navbar-item">
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <router-link to="/" class="navbar-item bg-color-primary">
         <img src="@/assets/GD.png" alt="GD logo" />
       </router-link>
       <template v-if="actor">
         <span class="navbar-item welcome" v-if="$route.path === '/'">
-          {{ $t('welcome') }} 
+          {{ $t('welcome') }}
           <template v-if="myStuff">{{ $t('you have') }}</template>
           <template v-else>{{ $t('there are') }}</template>
           &nbsp;<span class="project has-text-weight-bold">{{ $tc('pendingProjects', projects, { projects: projects }) }}</span>&nbsp;{{ $t('and') }}&nbsp;<span class="record has-text-weight-bold">{{ $tc('pendingRecords', records, { records: records }) }}</span>&nbsp;{{ $t('opened') }}

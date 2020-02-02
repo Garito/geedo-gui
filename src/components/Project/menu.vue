@@ -19,7 +19,7 @@
       </li>
       <li :class="{ 'is-active' : active === 'backlog' }">
         <router-link :to="$url(obj) + '/backlog'">
-          <div class="icon" :data-badge="stats.activity || null">
+          <div class="icon" :data-badge="null">
             <FontAwesomeIcon :icon="[ 'far', 'bell']" size="2x"></FontAwesomeIcon>
           </div>
           <div>{{ $t('Activity') }}</div>
