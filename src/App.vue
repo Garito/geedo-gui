@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header><Navbar /></header>
-    <div class="columns is-mobile is-gapless h-100">
+    <div class="columns is-mobile is-gapless mh-100">
       <aside class="column is-narrow bg-color-primary" v-if="$store.getters.actor"><MainMenu /></aside>
       <aside class="column is-3" v-if="obj && ['Project', 'Record'].includes(obj.type)"><Near :obj="obj" :near="getNear" /></aside>
       <main class="column is-expanded"><router-view /></main>

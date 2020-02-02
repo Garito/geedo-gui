@@ -35,7 +35,7 @@
       </div>
 
       <div class="column is-narrow">
-        <Search mini @searched="searched" />
+<!--        <Search mini @searched="searched" />-->
       </div>
     </div>
 

@@ -146,7 +146,7 @@ export default {
       if (result.ok) {
         let rjson = await result.json()
         this.$set(this.phases[phase], 'finished', rjson.result.finished)
-        this.$set(this.phases[phase], 'finisher', rjson.result.finisher)
+        this.$set(this.phases[phase], 'participant', rjson.result.participant)
       }
     },
     remove (phase) {
