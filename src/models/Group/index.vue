@@ -41,7 +41,7 @@
 
     <div class="columns respect-height">
       <div class="column">
-        <h2 class="subtitle project">{{ $t('Projects') }}</h2>
+        <h2 class="subtitle project is-size-4">{{ $t('Projects') }}</h2>
         <div class="projects has-hscroll" v-if="projects && Object.keys(projects).length">
           <ProjectCard :obj="proj" v-for="proj in projects" :key="proj._id" />
         </div>

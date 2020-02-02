@@ -15,6 +15,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.7",
     "bulma": "^0.7.5",
     "bulma-badge": "^3.0.1",
+    "bulma-helpers": "^0.3.8",
     "bulma-steps-component": "^0.5.3",
     "bulmaswatch": "^0.7.5",
     "core-js": "^2.6.5",

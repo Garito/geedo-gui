@@ -14,20 +14,20 @@
                   <FontAwesomeIcon :icon="[ 'far', 'edit' ]" size="lg"></FontAwesomeIcon>
                 </router-link>
 
-                <a class="is-size-6 is-spaced is-inline-flex align-items-center" @click="toggleStatus">
+                <button class="button" @click="toggleStatus">
                   <template v-if="project.canceled">
-                    <span class="icon">
+                    <span class="icon is-large">
                       <FontAwesomeIcon icon="toggle-on" size="lg"></FontAwesomeIcon>
                     </span>
-                    <span>&nbsp;{{ $t('archived') }}</span>
+                    <span class="is-capitalized">{{ $t('archived') }}</span>
                   </template>
                   <template v-else>
                     <span class="icon">
                       <FontAwesomeIcon icon="toggle-off" size="lg"></FontAwesomeIcon>
                     </span>
-                    <span>&nbsp;{{ $t('active') }}</span>
+                    <span class="is-capitalized">{{ $t('active') }}</span>
                   </template>
-                </a>
+                </button>
 
                 <a class="icon is-size-6 is-spaced is-inline-flex" @click="removeMe">
                   <FontAwesomeIcon :icon="[ 'far', 'trash-alt' ]" :style="{ color: 'red' }" size="lg"></FontAwesomeIcon>
@@ -53,16 +53,19 @@
       </div>
 
       <div class="columns" v-if="project.description">
-        <div class="column">
-          <span class="has-text-black-ter is-size-3">{{ $t('Description') }}:&nbsp;</span>
-          <p class="is-size-5">{{ project.description }}</p>
+        <div class="column" v-if="project.description">
+          <article class="message">
+            <div class="message-header">
+              <p>{{ $t('Description') }}:</p>
+            </div>
+            <div class="message-body">
+              {{ project.description }}
+            </div>
+          </article>
         </div>
       </div>
 
       <div class="columns" v-if="requester">
-        <div class="column is-narrow">
-          <span class="has-text-black-ter is-size-4">{{ $t('Requester') }}:&nbsp;</span>
-        </div>
         <div class="column">
           <Requester :obj="requester" />
         </div>
@@ -99,11 +102,16 @@
       </div>
 
       <!-- <Classifiers :obj="project" v-if="project.areas.length || project.themes.length || project.tags.length" /> -->
-
-      <div class="columns">
-        <div class="column">
-          <h2 class="is-size-3 has-text-black-ter">{{ $t('Resolution') }}:&nbsp;</h2>
-          <span class="is-size-5">{{ project.resolution }}</span>
+      <div class="columns" v-if="project.resolution">
+        <div class="column" v-if="project.resolution">
+          <article class="message">
+            <div class="message-header">
+              <p>{{ $t('Resolution') }}:</p>
+            </div>
+            <div class="message-body">
+              {{ project.resolution }}
+            </div>
+          </article>
         </div>
       </div>
 

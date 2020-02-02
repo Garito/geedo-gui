@@ -5,7 +5,9 @@
       <img :src="obj.avatar" :alt="obj.name + '\' avatar image'" v-if="obj.avatar" />
       <FontAwesomeIcon :icon="[ 'far', 'user-circle' ]" class="has-text-grey-light" v-else></FontAwesomeIcon>
     </figure>
-    <slot :obj="obj"></slot>
+    <div>
+      <slot :obj="obj" class="has-padding-top-20"></slot>
+    </div>
   </div>
 </template>
 

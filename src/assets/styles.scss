@@ -6,6 +6,7 @@
 @import "~bulmaswatch/flatly/variables";
 @import "~bulmaswatch/flatly/_overrides.scss";
 @import "~bulma-badge/dist/css/bulma-badge.sass";
+@import '~bulma-helpers/bulma-helpers';
 @import "colors";
 
 html,
@@ -150,5 +151,30 @@ h2 {
   margin: 10px;
   .file-item__actions {
     margin-top: 5px;
+  }
+}
+
+.card {
+  &.project {
+    .progress {
+      color: $project;
+    }
+  }
+}
+.progress {
+  &.progress--project-card {
+    margin-bottom: 5px;
+    height: 6px;
+    border-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.user {
+  &.avatar {
+    figure {
+      min-height: 32px;
+    }
   }
 }

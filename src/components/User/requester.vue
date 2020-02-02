@@ -1,14 +1,22 @@
 <template>
   <div class="requester">
-    <div class="columns requester">
-      <div class="column">{{ obj.name }}</div>
-      <div class="column">{{ obj.email }}</div>
-      <div class="column">{{ obj.phone }}</div>
-      <div class="column">{{ obj.nif }}</div>
-    </div>
     <div class="columns">
-      <div class="column">{{ obj.reqType }}</div>
-      <div class="column" v-if="obj.subtype">{{ obj.subtype }}</div>
+      <div class="column">
+        <article class="message">
+          <div class="message-header">
+            <p>{{ $t('Requester') }}:</p>
+          </div>
+          <div class="message-body">
+            <table class="table">
+              <tr><td>{{ $t('Name') }}</td><td>{{ obj.name }}</td></tr>
+              <tr><td>{{ $t('Email') }}</td><td>{{ obj.email }}</td></tr>
+              <tr><td>{{ $t('Phone') }}</td><td>{{ obj.phone }}</td></tr>
+              <tr><td>{{ $t('NIF') }}</td><td>{{ obj.nif }}</td></tr>
+              <tr><td>{{ obj.reqType }}</td><td>{{ obj.subtype }}</td></tr>
+            </table>
+          </div>
+        </article>
+      </div>
     </div>
   </div>
 </template>

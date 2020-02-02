@@ -89,4 +89,16 @@ $steps-active-color: $project;
       }
     }
   }
+  .steps-segment{
+    &:first-of-type {
+      .steps-content .tag {
+        transform: translateX(0);
+      }
+    }
+    &:last-of-type {
+      .steps-content .tag {
+        transform: translateX(-100%);
+      }
+    }
+  }
 </style>

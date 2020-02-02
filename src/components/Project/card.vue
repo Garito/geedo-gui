@@ -1,34 +1,18 @@
 <template>
-  <div class="project card">
+  <div class="card project">
+    <progress class="progress progress--project-card project" :value="obj.stats.phases.finished" :max="obj.stats.phases.total"></progress>
     <div class="card-content">
-      <div class="container">
-        <div class="columns">
-          <div class="column">
-            <router-link :to="$url(obj)" class="is-size-5 project">
-              <div>
-                <span class="has-text-grey-dark is-size-6">Projecte:</span>&nbsp;
-                <span>{{ obj.name }}</span>
-              </div>
-              <div>
-                <span class="has-text-grey-dark is-size-6">Codi:</span>&nbsp;
-                <span class="is-size-6">{{ obj.code }}</span>
-              </div>
-            </router-link>
+        <router-link :to="$url(obj)">
+          <div class="level">
+            <p class="is-size-4 level-left">{{ obj.name }}</p>
+            <span class="tag level-right has-margin-left-10">#{{ obj.code }}</span>
           </div>
-        </div>
+        </router-link>
 
         <div class="columns">
-          <div class="column">
-            <progress class="progress project" :value="obj.stats.phases.finished" :max="obj.stats.phases.total" />
-          </div>
-        </div>
-
-        <div class="columns">
-          <div class="column is-narrow" v-if="owner">
-            <Avatar :username="owner.name" :size="30" />
-          </div>
-          <div class="column is-expanded" v-if="stakeholders">
-            <Avatar :username="user.name" :size="30" class="is-inline-flex" v-for="user in stakeholders" :key="user._id" />
+          <div class="column is-expanded has-margin-top-20">
+            <Avatar :username="owner.name" class="has-margin-right-5 is-inline-flex" :size="30" :title="owner.name" />
+            <Avatar :username="user.name" :size="30" class="has-margin-right-5 is-inline-flex" v-for="user in stakeholders" :title="user.name" :key="user._id" />
           </div>
         </div>
 
@@ -38,18 +22,17 @@
               <FontAwesomeIcon :icon="[ 'far', 'file' ]"></FontAwesomeIcon>
             </span>
           </div>
-          <div class="column is-narrow" v-if="obj.stats.activity">
-            <span class="icon" :data-badge="obj.stats.activity">
-              <FontAwesomeIcon :icon="[ 'far', 'bell' ]"></FontAwesomeIcon>
-            </span>
-          </div>
+<!--          <div class="column is-narrow" v-if="obj.stats.activity">-->
+<!--            <span class="icon" :data-badge="obj.stats.activity">-->
+<!--              <FontAwesomeIcon :icon="[ 'far', 'bell' ]"></FontAwesomeIcon>-->
+<!--            </span>-->
+<!--          </div>-->
           <div class="column is-narrow" v-if="obj.stats.messages">
             <span class="icon" :data-badge="obj.stats.messages">
               <FontAwesomeIcon :icon="[ 'far', 'comment-alt' ]"></FontAwesomeIcon>
             </span>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </template>
